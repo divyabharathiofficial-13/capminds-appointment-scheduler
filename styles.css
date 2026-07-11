@@ -27,7 +27,7 @@
 
   --sidebar-w: 208px;
   --sidebar-w-collapsed: 68px;
-  --topbar-h: 69px;
+  --topbar-h: 60px;
 }
 
 *, *::before, *::after{ box-sizing:border-box; }
@@ -65,7 +65,7 @@ svg{ display:block; }
 .topbar-right{ min-width:0; }
 .logo{ display:flex; align-items:center; gap:10px; min-width:0; }
 .logo-mark{
-  height:80px;
+  height:32px;
   width:auto;
   display:block;
   flex-shrink:0;

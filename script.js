@@ -442,6 +442,8 @@
       var wrap = apptForm.querySelector('[data-field="' + id + '"]');
       if(wrap) wrap.classList.remove("error");
     });
+    var timeMsg = $("timeErrorMsg");
+    timeMsg.textContent = timeMsg.getAttribute("data-default");
   }
   function setFieldError(id, hasError){
     var wrap = apptForm.querySelector('[data-field="' + id + '"]');
@@ -458,6 +460,16 @@
     return valid;
   }
 
+  function findConflict(data){
+    return appointments.find(function(a){
+      if(editingId && a.id === editingId) return false;
+      if(a.date !== data.date || a.time !== data.time) return false;
+      var sameDoctor = a.doctorName.trim().toLowerCase() === data.doctorName.trim().toLowerCase();
+      var samePatient = a.patientName.trim().toLowerCase() === data.patientName.trim().toLowerCase();
+      return sameDoctor || samePatient;
+    });
+  }
+
   apptForm.addEventListener("submit", function(e){
     e.preventDefault();
     if(!validateForm()){ showToast("Please fill in all required fields", true); return; }
@@ -471,6 +483,22 @@
       time: $("apptTime").value,
       reason: $("reason").value.trim()
     };
+
+    var conflict = findConflict(data);
+    if(conflict){
+      setFieldError("apptDate", true);
+      setFieldError("apptTime", true);
+      var sameDoctor = conflict.doctorName.trim().toLowerCase() === data.doctorName.trim().toLowerCase();
+      var sameName = conflict.patientName.trim().toLowerCase() === data.patientName.trim().toLowerCase();
+      var reasonText = sameDoctor && sameName
+        ? "This patient and doctor already have an appointment"
+        : sameDoctor
+          ? "Dr. " + conflict.doctorName + " is already booked"
+          : conflict.patientName + " already has an appointment";
+      $("timeErrorMsg").textContent = reasonText + " at this time.";
+      showToast(reasonText + " at " + formatTime(data.time) + " on " + formatDateShort(data.date), true);
+      return;
+    }
 
     if(editingId){
       appointments = appointments.map(function(a){ return a.id === editingId ? Object.assign({}, a, data) : a; });

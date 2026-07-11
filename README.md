@@ -27,7 +27,7 @@ A responsive Appointment Scheduling application developed using pure HTML, CSS, 
 
 ## Project Structure
 
-```
+```text
 ├── index.html
 ├── Styles.css
 ├── script.js
@@ -36,10 +36,10 @@ A responsive Appointment Scheduling application developed using pure HTML, CSS, 
 
 ## How to Run
 
-1. Download the project.
-2. Open `index.html` in any modern browser.
+1. Download or clone the repository.
+2. Open `index.html` in any modern web browser.
 
-No installation or backend required.
+No installation or backend is required.
 
 ## Author
 
